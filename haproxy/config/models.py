@@ -15,10 +15,11 @@ class Site(models.Model):
         ('http', 'HTTP')
     )
 
-    customer = models.ForeignKey('Customer')
-    main_domain = models.CharField('Main domain', max_length=100)
+    DEFAULT_MODE = 'http'
 
-    mode = models.CharField('Mode', choices=MODES, max_length=4)
+    mode = models.CharField('Mode', choices=MODES, max_length=4, default=DEFAULT_MODE)
+    customer = models.ForeignKey('Customer')
+    enabled = models.BooleanField('Enabled', default=True)
 
     enable_http = models.BooleanField('Enable HTTP', default=True)
 
@@ -29,16 +30,25 @@ class Site(models.Model):
 
     custom_configs = models.TextField('Custom backend config', null=True, blank=True)
 
+    @property
+    def enabled_domains(self):
+        return self.domain_list.filter(enabled=True)
+
     def __unicode__(self):
-        return self.main_domain
+        desc = self.enabled_domains[0].domain
+        if self.enabled_domains.count() > 1:
+            desc = "{} and {} others".format(desc, self.enabled_domains.count() - 1)
+        return desc
 
 
 class Domain(models.Model):
-    site = models.ForeignKey('Site')
+    site = models.ForeignKey('Site', on_delete=models.CASCADE, related_name='domain_list')
     domain = models.CharField('Domain', max_length=100)
+    enabled = models.BooleanField('Enabled', default=True)
+    created = models.DateTimeField(auto_now_add=True)
 
     def __unicode__(self):
-        return "{} ({})".format(self.domain, self.site)
+        return self.domain
 
 
 class Server(models.Model):
