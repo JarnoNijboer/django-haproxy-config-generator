@@ -23,6 +23,7 @@ class ServerListInline(BaseConfigInline):
 
 class SiteAdmin(admin.ModelAdmin):
     list_display = ('__unicode__', 'customer', 'enabled', 'mode', 'enable_http', 'enable_https',)
+    list_filter = ('customer', 'enabled', 'mode', 'enable_http', 'enable_https',)
     fieldsets = (
         (None, {
             'fields': ('mode', 'customer', 'enabled',)
