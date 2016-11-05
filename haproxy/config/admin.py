@@ -12,7 +12,7 @@ class BaseConfigInline(InlineModelAdmin):
 
 class DomainListInline(BaseConfigInline):
     model = Domain
-    fields = ('domain', 'created', 'enabled',)
+    fields = ('domain', 'created', 'exact', 'enabled',)
     readonly_fields = ('created',)
 
 
