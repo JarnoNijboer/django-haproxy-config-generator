@@ -5,6 +5,9 @@ class Customer(models.Model):
     name = models.CharField('Customer', max_length=100)
     slug = models.CharField('Slug', max_length=32)
 
+    def __unicode__(self):
+        return self.name
+
 
 class Site(models.Model):
     MODES = (
@@ -26,10 +29,16 @@ class Site(models.Model):
 
     custom_configs = models.TextField('Custom backend config', null=True, blank=True)
 
+    def __unicode__(self):
+        return self.main_domain
+
 
 class Domain(models.Model):
     site = models.ForeignKey('Site')
     domain = models.CharField('Domain', max_length=100)
+
+    def __unicode__(self):
+        return "{} ({})".format(self.domain, self.site)
 
 
 class Server(models.Model):
@@ -37,3 +46,6 @@ class Server(models.Model):
     name = models.CharField('Server name', max_length=100, default='app')
     address = models.CharField('Server address', max_length=100)
     check = models.BooleanField('Check', default=True)
+
+    def __unicode__(self):
+        return "{} ({})".format(self.name, self.address)
