@@ -1,17 +1,24 @@
 from django.contrib import admin
 from django.contrib.admin.options import InlineModelAdmin
-from models import Customer, Site, Domain
+from models import Customer, Site, Domain, Server
 
 
-class DomainListInline(InlineModelAdmin):
+class BaseConfigInline(InlineModelAdmin):
     template = 'admin/InlineWithoutOriginal.html'
-    model = Domain
-    fields = ('domain', 'created', 'enabled',)
-    readonly_fields = ('created',)
     can_delete = True
     extra = 1
     ordering = ('id',)
-    original = False
+
+
+class DomainListInline(BaseConfigInline):
+    model = Domain
+    fields = ('domain', 'created', 'enabled',)
+    readonly_fields = ('created',)
+
+
+class ServerListInline(BaseConfigInline):
+    model = Server
+    fields = ('name', 'address', 'check',)
 
 
 class SiteAdmin(admin.ModelAdmin):
@@ -31,7 +38,7 @@ class SiteAdmin(admin.ModelAdmin):
             'fields': ('custom_configs',),
         }),
     )
-    inlines = [DomainListInline]
+    inlines = [DomainListInline, ServerListInline]
 
 admin.site.register(Site, SiteAdmin)
 admin.site.register(Customer)
