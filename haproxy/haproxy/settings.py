@@ -12,21 +12,8 @@ https://docs.djangoproject.com/en/1.10/ref/settings/
 
 import os
 
-# Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/1.10/howto/deployment/checklist/
-
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'ad#*@shcyz(!7u&*_ax8&oha50njudm*zl&galf7=uug!3()80'
-
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-
-ALLOWED_HOSTS = []
-
-# Application definition
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -67,20 +54,12 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'haproxy.wsgi.application'
 
-
-# Database
-# https://docs.djangoproject.com/en/1.10/ref/settings/#databases
-
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 }
-
-
-# Password validation
-# https://docs.djangoproject.com/en/1.10/ref/settings/#auth-password-validators
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -97,18 +76,24 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
-# Internationalization
-# https://docs.djangoproject.com/en/1.10/topics/i18n/
-
 LANGUAGE_CODE = 'en-us'
-
 TIME_ZONE = 'UTC'
-
 USE_I18N = True
-
 USE_L10N = True
-
 USE_TZ = True
-
+DEBUG = True
 STATIC_URL = '/static/'
+SECRET_KEY = 'ad#*@shcyz(!7u&*_ax8&oha50njudm*zl&galf7=uug!3()80'
+ALLOWED_HOSTS = []
+
+# Frontend configs
+HTTP_DEFAULT_BACKEND = 'http_default'
+HTTPS_DEFAULT_BACKEND = 'https_default'
+
+# Stats config
+ENABLE_STATS = True
+STATS_USERNAME = 'username'
+STATS_PASSWORD = 'password'
+STATS_PATH = '/'
+STATS_REFRESH = 5
+
