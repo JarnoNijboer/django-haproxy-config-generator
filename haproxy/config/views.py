@@ -12,13 +12,13 @@ def print_config(_):
         for site in sites.filter(**filter_):
             for domain in site.enabled_domains:
                 yield 'use_backend bk_%s_%d if { %s -i %s }' % (
-                    site.customer.slug, site.id, (exact_if if not domain.exact else non_exact_if), domain.domain)
+                    site.customer.slug, site.id, (exact_if if domain.exact else non_exact_if), domain.domain)
 
     return render_to_response(
         'config.tpl',
         context={
             'http_frontend': '\n    '.join(get_frontend({'enable_http': True}, 'hdr(host)', 'hdr_end(host)')),
             'https_frontend': '\n    '.join(get_frontend({'enable_https': True}, 'ssl_fc_sni', 'ssl_fc_sni_end')),
-            'sites': sites
+            'sites': sites,
         },
         content_type='text/plain')
