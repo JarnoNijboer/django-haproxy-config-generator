@@ -2,6 +2,8 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render_to_response
 
 from config.models import Site
+from haproxy.settings import HTTP_DEFAULT_BACKEND, HTTPS_DEFAULT_BACKEND,\
+    ENABLE_STATS, STATS_USERNAME, STATS_PASSWORD, STATS_PATH, STATS_REFRESH
 
 
 @login_required()
@@ -16,9 +18,19 @@ def print_config(_):
 
     return render_to_response(
         'config.tpl',
+        content_type='text/plain',
         context={
+            # Configuration from the database
             'http_frontend': '\n    '.join(get_frontend({'enable_http': True}, 'hdr(host)', 'hdr_end(host)')),
             'https_frontend': '\n    '.join(get_frontend({'enable_https': True}, 'ssl_fc_sni', 'ssl_fc_sni_end')),
             'sites': sites,
-        },
-        content_type='text/plain')
+
+            # Configuration from the settings.py file
+            'http_default_backend': HTTP_DEFAULT_BACKEND,
+            'https_default_backend': HTTPS_DEFAULT_BACKEND,
+            'stats': ENABLE_STATS,
+            'stats_username': STATS_USERNAME,
+            'stats_password': STATS_PASSWORD,
+            'stats_path': STATS_PATH,
+            'stats_refresh': STATS_REFRESH
+        })
