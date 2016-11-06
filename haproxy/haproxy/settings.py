@@ -97,3 +97,7 @@ STATS_PASSWORD = 'password'
 STATS_PATH = '/'
 STATS_REFRESH = 5
 
+try:
+    from local_settings import *
+except:
+    pass
