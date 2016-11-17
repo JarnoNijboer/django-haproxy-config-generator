@@ -73,7 +73,7 @@ frontend stats_in
 
 {% for site in sites %}
 # {{ site.id }}: {{ site }}
-backend bk_{{ site.customer.slug }}_{{ site.id }}
+backend bk_{{ site.id }}
     {{ site.backend_config }}
 
 {% endfor %}

@@ -1,14 +1,5 @@
 from django.db import models
 
-
-class Customer(models.Model):
-    name = models.CharField('Customer', max_length=100)
-    slug = models.CharField('Slug', max_length=32)
-
-    def __unicode__(self):
-        return self.name
-
-
 class Site(models.Model):
     MODES = (
         ('tcp', 'TCP'),
@@ -18,7 +9,6 @@ class Site(models.Model):
     DEFAULT_MODE = 'http'
 
     mode = models.CharField('Mode', choices=MODES, max_length=4, default=DEFAULT_MODE)
-    customer = models.ForeignKey('Customer')
     enabled = models.BooleanField('Enabled', default=True)
 
     enable_http = models.BooleanField(

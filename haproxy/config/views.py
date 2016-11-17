@@ -8,13 +8,13 @@ from haproxy.settings import HTTP_DEFAULT_BACKEND, HTTPS_DEFAULT_BACKEND,\
 
 @login_required()
 def print_config(_):
-    sites = Site.objects.filter(enabled=True).select_related('customer')
+    sites = Site.objects.filter(enabled=True)
 
     def get_frontend(filter_, exact_if, non_exact_if):
         for site in sites.filter(**filter_):
             for domain in site.enabled_domains:
-                yield 'use_backend bk_%s_%d if { %s -i %s }' % (
-                    site.customer.slug, site.id, (exact_if if domain.exact else non_exact_if), domain.domain)
+                yield 'use_backend bk_%d if { %s -i %s }' % (
+                    site.id, (exact_if if domain.exact else non_exact_if), domain.domain)
 
     return render_to_response(
         'config.tpl',

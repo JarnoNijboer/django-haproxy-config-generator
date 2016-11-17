@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.contrib.admin.options import InlineModelAdmin
-from models import Customer, Site, Domain, Server
+from models import Site, Domain, Server
 
 
 class BaseConfigInline(InlineModelAdmin):
@@ -22,11 +22,11 @@ class ServerListInline(BaseConfigInline):
 
 
 class SiteAdmin(admin.ModelAdmin):
-    list_display = ('__unicode__', 'customer', 'enabled', 'mode', 'enable_http', 'enable_https',)
-    list_filter = ('customer', 'enabled', 'mode', 'enable_http', 'enable_https',)
+    list_display = ('__unicode__', 'enabled', 'mode', 'enable_http', 'enable_https',)
+    list_filter = ('enabled', 'mode', 'enable_http', 'enable_https',)
     fieldsets = (
         (None, {
-            'fields': ('mode', 'customer', 'enabled',)
+            'fields': ('mode', 'enabled',)
         }),
         ('HTTP settings', {
             'fields': ('enable_http',),
@@ -42,4 +42,3 @@ class SiteAdmin(admin.ModelAdmin):
     inlines = [DomainListInline, ServerListInline]
 
 admin.site.register(Site, SiteAdmin)
-admin.site.register(Customer)
